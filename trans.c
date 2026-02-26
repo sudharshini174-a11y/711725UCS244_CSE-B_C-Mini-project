@@ -10,6 +10,8 @@ struct clientData
     char lastName[15];    // account last name
     char firstName[10];   // account first name
     double balance;       // account balance
+    char ifsc[15];       // IFSC code
+    int age;             // account holder's age
 };                        // end structure clientData
 
 // prototypes
@@ -131,7 +133,7 @@ void updateRecord(FILE *fPtr)
 
         // move file pointer to correct record in file
         // move back by 1 record length
-        fseek(fPtr, -sizeof(struct clientData), SEEK_CUR);
+        fseek(fPtr, sizeof(struct clientData), SEEK_CUR);
         // write updated record over old record in file
         fwrite(&client, sizeof(struct clientData), 1, fPtr);
     } // end else
@@ -164,6 +166,8 @@ void deleteRecord(FILE *fPtr)
         // replace existing record with blank record
         fwrite(&blankClient, sizeof(struct clientData), 1, fPtr);
     } // end else
+    printf("Enter lastname  firstname balance ifsc code age:\n");
+    scanf("%14s%9s%lf%14s%d", client.lastName, client.firstName, &client.balance, client.ifsc, &client.age);
 } // end function deleteRecord
 
 // create and insert record
