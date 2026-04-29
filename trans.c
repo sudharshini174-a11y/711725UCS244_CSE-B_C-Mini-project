@@ -80,7 +80,7 @@ void textFile(FILE *readPtr)
     else
     {
         rewind(readPtr); // sets pointer to beginning of file
-        fprintf(writePtr, "%-6s%-16s%-11s%10s\n", "Acct", "Last Name", "First Name", "Balance");
+        fprintf(writePtr, "%-6s%-16s%-11s%10s %-15s %5s\n", "Acct", "Last Name", "First Name", "Balance", "IFSC", "Age");
 
         // copy all records from random-access file into text file
         while (!feof(readPtr))
@@ -90,8 +90,8 @@ void textFile(FILE *readPtr)
             // write single record to text file
             if (result != 0 && client.acctNum != 0)
             {
-                fprintf(writePtr, "%-6d%-16s%-11s%10.2f\n", client.acctNum, client.lastName, client.firstName,
-                        client.balance);
+                fprintf(writePtr, "%-6d%-16s%-11s%10.2f %-15s %5d\n", client.acctNum, client.lastName, client.firstName,
+                        client.balance , client.ifsc, client.age);
             } // end if
         }     // end while
 
@@ -122,14 +122,14 @@ void updateRecord(FILE *fPtr)
     }
     else
     { // update record
-        printf("%-6d%-16s%-11s%10.2f\n\n", client.acctNum, client.lastName, client.firstName, client.balance);
+        printf("%-6d%-16s%-11s%10.2f %-15s %5d\n\n", client.acctNum, client.lastName, client.firstName, client.balance, client.ifsc, client.age);
 
         // request transaction amount from user
         printf("%s", "Enter charge ( + ) or payment ( - ): ");
         scanf("%lf", &transaction);
         client.balance += transaction; // update record balance
 
-        printf("%-6d%-16s%-11s%10.2f\n", client.acctNum, client.lastName, client.firstName, client.balance);
+        printf("%-6d%-16s%-11s%10.2f %-15s %5d\n", client.acctNum, client.lastName, client.firstName, client.balance, client.ifsc, client.age);
 
         // move file pointer to correct record in file
         // move back by 1 record length
@@ -166,8 +166,8 @@ void deleteRecord(FILE *fPtr)
         // replace existing record with blank record
         fwrite(&blankClient, sizeof(struct clientData), 1, fPtr);
     } // end else
-    printf("Enter lastname  firstname balance ifsc code age:\n");
-    scanf("%14s%9s%lf%14s%d", client.lastName, client.firstName, &client.balance, client.ifsc, &client.age);
+    
+    
 } // end function deleteRecord
 
 // create and insert record
@@ -193,8 +193,8 @@ void newRecord(FILE *fPtr)
     else
     { // create record
         // user enters last name, first name and balance
-        printf("%s", "Enter lastname, firstname, balance\n? ");
-        scanf("%14s%9s%lf", client.lastName, client.firstName, &client.balance);
+        printf("%s", "Enter lastname, firstname, balance, ifsc code, age\n? ");
+        scanf("%14s %9s %lf %14s %d", client.lastName, client.firstName, &client.balance, client.ifsc, &client.age);
 
         client.acctNum = accountNum;
         // move file pointer to correct record in file
