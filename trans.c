@@ -127,7 +127,12 @@ void updateRecord(FILE *fPtr)
         // request transaction amount from user
         printf("%s", "Enter charge ( + ) or payment ( - ): ");
         scanf("%lf", &transaction);
-        client.balance += transaction; // update record balance
+        client.balance += transaction;
+        printf("IFSC: %s\n", client.ifsc);
+        scanf("%14s", client.ifsc);
+        printf("AGE: %d\n", client.age);
+        scanf("%d", &client.age);
+        // update record balance
 
         printf("%-6d%-16s%-11s%10.2f %-15s %5d\n", client.acctNum, client.lastName, client.firstName, client.balance, client.ifsc, client.age);
 
